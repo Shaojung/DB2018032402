@@ -1,7 +1,9 @@
 package com.example.student.db2018032402;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import java.io.File;
@@ -19,8 +21,12 @@ public class MainActivity extends AppCompatActivity {
         copyDb();
         if (fout.exists()) {
             Toast.makeText(MainActivity.this, "檔案存在", Toast.LENGTH_SHORT).show();
-
         }
+    }
+    public void click1(View v)
+    {
+        SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(fout, null);
+        
     }
     public void copyDb()
     {
