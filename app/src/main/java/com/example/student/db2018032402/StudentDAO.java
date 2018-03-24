@@ -7,6 +7,7 @@ import java.util.List;
  */
 
 public interface StudentDAO {
-    List<String> getList();
+    List<Phone> getList();
     void AddPhone(Phone p);
+    Phone getOneData(int id);
 }

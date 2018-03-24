@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -23,7 +24,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     File fout;
-    List<String> mylist;
+    List<Phone> mylist;
     ArrayAdapter<String> adapter;
     ListView lv;
     StudentDAO dao;
@@ -43,17 +44,37 @@ public class MainActivity extends AppCompatActivity {
         }
 
         lv = (ListView) findViewById(R.id.listView);
+        ArrayList<String> showList = new ArrayList<>();
+        for (Phone p : mylist)
+        {
+            showList.add(p.stuname);
+        }
         adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1,
-                mylist);
+                showList);
         lv.setAdapter(adapter);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Phone p = mylist.get(position);
+                Intent it = new Intent(MainActivity.this, DetailActivity.class);
+                it.putExtra("id", p.id);
+                startActivity(it);
+
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         mylist = dao.getList();
+        ArrayList<String> showList = new ArrayList<>();
+        for (Phone p : mylist)
+        {
+            showList.add(p.stuname);
+        }
         adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1,
-                mylist);
+                showList);
         lv.setAdapter(adapter);
     }
 

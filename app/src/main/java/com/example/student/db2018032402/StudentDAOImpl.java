@@ -23,15 +23,16 @@ public class StudentDAOImpl implements StudentDAO {
         fout = new File(context.getFilesDir(), "student.sqlite");
     }
     @Override
-    public List<String> getList() {
-        ArrayList<String> mylist = new ArrayList<>();
+    public List<Phone> getList() {
+        ArrayList<Phone> mylist = new ArrayList<>();
         SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(fout, null);
         Cursor c = db.rawQuery("Select * from phone", null);
         c.moveToFirst();
         mylist.clear();
         do
         {
-            mylist.add(c.getString(1));
+            Phone p = new Phone(c.getInt(0), c.getString(1), c.getString(2));
+            mylist.add(p);
             Log.d("DB", c.getString(1));
         }while (c.moveToNext());
         db.close();
@@ -45,5 +46,22 @@ public class StudentDAOImpl implements StudentDAO {
         cv.put("stuname", p.stuname);
         cv.put("tel", p.tel);
         db.insert("phone", null, cv);
+    }
+
+    @Override
+    public Phone getOneData(int id) {
+        SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(fout, null);
+        String str = "Select * from phone where id=?";
+        Cursor c = db.rawQuery(str, new String[] {String.valueOf(id)});
+        if (c.moveToFirst())
+        {
+            Phone p = new Phone(c.getInt(0), c.getString(1), c.getString(2));
+            return p;
+        }
+        else
+        {
+            return null;
+        }
+
     }
 }
