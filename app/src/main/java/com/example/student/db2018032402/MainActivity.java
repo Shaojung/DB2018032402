@@ -1,5 +1,6 @@
 package com.example.student.db2018032402;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,7 +27,9 @@ public class MainActivity extends AppCompatActivity {
     public void click1(View v)
     {
         SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(fout, null);
-        
+        Cursor c = db.rawQuery("Select * from phone", null);
+        c.moveToFirst();
+        Toast.makeText(MainActivity.this, c.getString(1), Toast.LENGTH_SHORT).show();
     }
     public void copyDb()
     {
