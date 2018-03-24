@@ -1,5 +1,6 @@
 package com.example.student.db2018032402;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,12 +20,11 @@ public class StudentDAOImpl implements StudentDAO {
     public StudentDAOImpl(Context context)
     {
         this.context = context;
-
+        fout = new File(context.getFilesDir(), "student.sqlite");
     }
     @Override
     public List<String> getList() {
         ArrayList<String> mylist = new ArrayList<>();
-        fout = new File(context.getFilesDir(), "student.sqlite");
         SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(fout, null);
         Cursor c = db.rawQuery("Select * from phone", null);
         c.moveToFirst();
@@ -36,5 +36,14 @@ public class StudentDAOImpl implements StudentDAO {
         }while (c.moveToNext());
         db.close();
         return mylist;
+    }
+
+    @Override
+    public void AddPhone(Phone p) {
+        SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(fout, null);
+        ContentValues cv = new ContentValues();
+        cv.put("stuname", p.stuname);
+        cv.put("tel", p.tel);
+        db.insert("phone", null, cv);
     }
 }

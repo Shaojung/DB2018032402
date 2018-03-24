@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface StudentDAO {
     List<String> getList();
+    void AddPhone(Phone p);
 }
