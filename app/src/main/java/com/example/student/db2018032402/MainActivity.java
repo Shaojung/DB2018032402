@@ -23,6 +23,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     File fout;
     ArrayList<String> mylist;
+    ArrayAdapter<String> adapter;
+    ListView lv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,20 +38,28 @@ public class MainActivity extends AppCompatActivity {
         {
             copyDb();
         }
+
+        lv = (ListView) findViewById(R.id.listView);
+        adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1,
+                mylist);
+        lv.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(fout, null);
         Cursor c = db.rawQuery("Select * from phone", null);
         c.moveToFirst();
+        mylist.clear();
         do
         {
             mylist.add(c.getString(1));
             Log.d("DB", c.getString(1));
         }while (c.moveToNext());
         db.close();
-        ListView lv = (ListView) findViewById(R.id.listView);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1,
-                mylist);
-        lv.setAdapter(adapter);
     }
+
     public void copyDb()
     {
 
