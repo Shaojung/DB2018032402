@@ -26,12 +26,13 @@ public class MainActivity extends AppCompatActivity {
     {
         fout = new File(getFilesDir(), "student.sqlite");
         InputStream is = getResources().openRawResource(R.raw.student);
-        int b;
+        byte b[] = new byte[1024];
+        int len;
         try {
             FileOutputStream fos = new FileOutputStream(fout);
-            while((b = is.read()) == -1)
+            while((len = is.read(b)) != -1)
             {
-                fos.write(b);
+                fos.write(b, 0, len);
             }
             fos.close();
             is.close();
