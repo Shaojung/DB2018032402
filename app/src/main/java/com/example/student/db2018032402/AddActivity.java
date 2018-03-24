@@ -12,21 +12,20 @@ import java.io.File;
 public class AddActivity extends AppCompatActivity {
     File fout;
     EditText ed1, ed2;
+    StudentDAO dao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
+        dao = new StudentDAOImpl(AddActivity.this);
         fout = new File(getFilesDir(), "student.sqlite");
         ed1 = (EditText) findViewById(R.id.editText);
         ed2 = (EditText) findViewById(R.id.editText2);
     }
     public void clickAdd(View v)
     {
-        SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(fout, null);
-        ContentValues cv = new ContentValues();
-        cv.put("stuname", ed1.getText().toString());
-        cv.put("tel", ed2.getText().toString());
-        db.insert("phone", null, cv);
+        Phone p = new Phone(ed1.getText().toString(), ed2.getText().toString());
+        dao.AddPhone(p);
         finish();
     }
 }

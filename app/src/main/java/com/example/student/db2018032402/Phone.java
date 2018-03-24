@@ -14,4 +14,9 @@ public class Phone {
         this.stuname = stuname;
         this.tel = tel;
     }
+    public Phone(String stuname, String tel)
+    {
+        this.stuname = stuname;
+        this.tel = tel;
+    }
 }
