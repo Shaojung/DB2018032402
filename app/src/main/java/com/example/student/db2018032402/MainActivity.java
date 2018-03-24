@@ -19,18 +19,21 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     File fout;
-    ArrayList<String> mylist;
+    List<String> mylist;
     ArrayAdapter<String> adapter;
     ListView lv;
+    StudentDAO dao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         fout = new File(getFilesDir(), "student.sqlite");
-        mylist = new ArrayList<>();
+        dao = new StudentDAOImpl(MainActivity.this);
+        mylist = dao.getList();
         if (fout.exists()) {
             Toast.makeText(MainActivity.this, "檔案存在", Toast.LENGTH_SHORT).show();
         }
@@ -48,16 +51,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(fout, null);
-        Cursor c = db.rawQuery("Select * from phone", null);
-        c.moveToFirst();
-        mylist.clear();
-        do
-        {
-            mylist.add(c.getString(1));
-            Log.d("DB", c.getString(1));
-        }while (c.moveToNext());
-        db.close();
+        mylist = dao.getList();
+        adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1,
+                mylist);
+        lv.setAdapter(adapter);
     }
 
     public void copyDb()
