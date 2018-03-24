@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -29,7 +30,11 @@ public class MainActivity extends AppCompatActivity {
         SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(fout, null);
         Cursor c = db.rawQuery("Select * from phone", null);
         c.moveToFirst();
-        Toast.makeText(MainActivity.this, c.getString(1), Toast.LENGTH_SHORT).show();
+        do
+        {
+            Log.d("DB", c.getString(1));
+        }while (c.moveToNext());
+        db.close();
     }
     public void copyDb()
     {
